@@ -22,8 +22,8 @@ signal that the cache controller uses to ask the data cache to fill the correspo
 - The processor requests a write operation (executing a SW instruction) and the cache controller decides that it is a hit. In this case, the word to be stored has to be written both in the cache memory and in the data memory (due to the write-through policy). So the cache controller asserts the stall signal until the memory confirms that it finished writing via its ready signal. Simultaneously the cache controller asks the cache memory to update the value.
 - The processor requests a write operation (again executing a SW instruction) and the cache controller decides that it is a miss. In this case, the word to be stored is written in the data memory only (due to the write-around policy); however, in this case too, the cache controller asserts the stall signal until the memory finishes the storing.
 
-
 Figure 1 Data Memory System
+![Data Memory System](https://github.com/user-attachments/assets/507bfa8f-dab9-4167-8d5f-0c197de9912f)
 
 Note that in order to decide whether the access is a hit or a miss, the cache controller has to be provided with the index and the tag of the address being accessed and it also needs to have access to the array of tags and the array of valid bits corresponding to the cache blocks in the cache module.
 The valid_bits array needs to be initialized to zeros to indicate a cold cache start. This can be done using reset signal. Both arrays (valid and tag) need to be updated when a new block is cached (at the rising edge when the fill signal is asserted).
@@ -33,6 +33,7 @@ To function properly, the cache controller needs to implement a finite state mac
 # Appendix
 Caches are used to speed up data fetching from main memory or higher level memory. Because they are smaller in size they can fit very close to CPU, however they can’t accommodate all the data in the main memory. So extra bits are added beside data in the cache to help mapping the main memory large address space to cache small address space.
 
+![DirectMapPNG](https://github.com/user-attachments/assets/5a9f925b-7d1c-49de-91e8-a59762db4ff7)
 
 Cache controller maps data block (line) from memory to cache. There are several ways to do the mapping, we will use direct mapping. Direct mapping indicates that for every block(line) in the main memory, there is only one place for it in the cache as seen in fig. 1.
 So how the cache actually works? When a data requested from the cache, it checks the valid bit, if valid, then it retrieves the data from cache, else it has to raise a hit miss and start loading the missed cache block from the main memory. The rest of the processor should be waiting till the cache block is transferred from main memory to cache.
@@ -43,5 +44,8 @@ trying to access, while the offset indicates which word inside the cache we are 
 To understand more about caching you can check MIT course module here or Emory module.
 
 Synthesis in Quartus
+![Synthesis](https://github.com/user-attachments/assets/ccefeaf0-08c9-4072-a34f-519a7cc45ecb)
+![FSM](https://github.com/user-attachments/assets/50211e0d-a6e1-4f6e-8f6e-31995c8b27af)
 
 Simulation in QuestaSim
+![Simulation CACHE-RISCV](https://github.com/user-attachments/assets/7f45c89d-a008-42b7-ad09-3387e7778dcc)
